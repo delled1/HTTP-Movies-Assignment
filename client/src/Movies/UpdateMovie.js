@@ -16,7 +16,6 @@ const UpdateMovie = (props) => {
 
     const { push } = useHistory();
     const { id } = useParams();
-    // const foundMovie = props.movieList.find((movie) => movie.id.toString() === id)
 
     const [movie, setMovie] = useState(initialMovie)
 
@@ -29,7 +28,7 @@ const UpdateMovie = (props) => {
         .catch(err => {
             console.log(err)
         })
-    }, [id])
+    }, [id, props.movies])
 
     const changeHandler = e => {
         e.persist();
@@ -42,11 +41,12 @@ const UpdateMovie = (props) => {
 
     const handleSubmit = e => {
         e.preventDefault();
+        
         axios.put(`http://localhost:5000/api/movies/${id}`, movie)
         .then((res) => {
             console.log(res.data)
             props.setMovieList(res.data);
-            push(`/movies/${id}`)
+            push("/")
         })
         .catch((err) => {
             console.log(err)
