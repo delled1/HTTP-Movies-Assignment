@@ -6,20 +6,22 @@ import { useParams, useHistory } from "react-router-dom";
 const UpdateMovie = (props) => {
     console.log(props)
 
-    const { push } = useHistory;
-    const { id } = useParams;
+    const initialMovie = {
+        id: "",
+        title: "",
+        director: "",
+        metascore: "",
+        stars: []
+    }
+
+    const { push } = useHistory();
+    const { id } = useParams();
     // const foundMovie = props.movieList.find((movie) => movie.id.toString() === id)
 
-    const [movie, setMovie] = useState({
-        id: 1,
-        title: "Star Wars",
-        director: "George Lucas",
-        metascore: 92,
-        stars: ["Mark Hamill", "Harrison Ford", "Carrie Fisher"]
-      },)
+    const [movie, setMovie] = useState(initialMovie)
 
     useEffect(() => {
-        axios.get(`http://localhost:5000/api/movies/1`)
+        axios.get(`http://localhost:5000/api/movies/${id}`)
         .then((res) => {
             console.log(res.data)
             setMovie(res.data)
@@ -40,11 +42,11 @@ const UpdateMovie = (props) => {
 
     const handleSubmit = e => {
         e.preventDefault();
-        axios.put(`http://localhost:5000/api/movies/1`, movie)
+        axios.put(`http://localhost:5000/api/movies/${id}`, movie)
         .then((res) => {
             console.log(res.data)
-            // props.setMovieList(res.data);
-            // push(`/movie-list/1`)
+            props.setMovieList(res.data);
+            push(`/movies/${id}`)
         })
         .catch((err) => {
             console.log(err)
